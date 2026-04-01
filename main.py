@@ -82,10 +82,44 @@ def main():
             info(stripped)
 
     # ── Rapport ──────────────────────────────────────────────────────────────
-    section("Génération du rapport", "◈")
-    spinner("Écriture du rapport...", duration=0.6)
+    section("Rapport d'audit", "◈")
 
-    path = save_report(report_data)
+    print()
+    print(f"  {C.CYAN}{C.BOLD}Voulez-vous sauvegarder le rapport ?{C.RESET}")
+    print(f"  {C.GRAY}╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌{C.RESET}")
+    print(f"  {C.GREEN}[yes]{C.RESET}  Sauvegarder le rapport")
+    print(f"  {C.RED}[no]{C.RESET}   Quitter sans sauvegarder")
+    print()
+
+    while True:
+        choix = input(f"  {C.BOLD}Votre choix :{C.RESET} ").strip().lower()
+        if choix in ("yes", "y", "oui", "o"):
+            break
+        elif choix in ("no", "n", "non"):
+            print()
+            print(f"  {C.GRAY}Rapport non sauvegardé. À bientôt !{C.RESET}")
+            print()
+            return
+        else:
+            warn("Répondez par 'yes' ou 'no'")
+
+    print()
+    print(f"  {C.CYAN}{C.BOLD}Dans quel format ?{C.RESET}")
+    print(f"  {C.GRAY}╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌{C.RESET}")
+    print(f"  {C.GREEN}[txt]{C.RESET}  Rapport lisible (texte brut)")
+    print(f"  {C.CYAN}[json]{C.RESET} Rapport structuré (JSON)")
+    print(f"  {C.YELLOW}[both]{C.RESET} Les deux formats")
+    print()
+
+    while True:
+        format_choix = input(f"  {C.BOLD}Votre choix :{C.RESET} ").strip().lower()
+        if format_choix in ("txt", "json", "both"):
+            break
+        else:
+            warn("Répondez par 'txt', 'json' ou 'both'")
+
+    spinner("Écriture du rapport...", duration=0.6)
+    path = save_report(report_data, format=format_choix)
     print_footer(path)
 
 
