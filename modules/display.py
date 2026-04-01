@@ -135,15 +135,22 @@ def info(label):
     print(f"  {C.GRAY}│{C.RESET}  {C.DIM}{label}{C.RESET}")
 
 
-def port_line(port, service, open=True):
+def port_line(port, service, open=True, sensitive=False):
     """Affiche une ligne pour un port."""
     if open:
-        status = f"{C.GREEN}OUVERT{C.RESET}"
-        icon = f"{C.GREEN}✔{C.RESET}"
+        if sensitive:
+            status = f"{C.RED}OUVERT  ⚠ SENSIBLE{C.RESET}"
+            icon = f"{C.RED}✔{C.RESET}"
+            color = C.RED
+        else:
+            status = f"{C.GREEN}OUVERT{C.RESET}"
+            icon = f"{C.GREEN}✔{C.RESET}"
+            color = C.CYAN
     else:
         status = f"{C.GRAY}FERMÉ{C.RESET}"
         icon = f"{C.GRAY}✖{C.RESET}"
-    print(f"  {icon}  Port {C.BOLD}{port:<6}{C.RESET}  {C.CYAN}{service:<12}{C.RESET}  {status}")
+        color = C.GRAY
+    print(f"  {icon}  Port {C.BOLD}{port:<6}{C.RESET}  {color}{service:<12}{C.RESET}  {status}")
 
 
 def host_line(ip, is_self=False):
